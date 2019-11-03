@@ -1,5 +1,5 @@
 <?php
-
+use App\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +11,28 @@
 |
 */
 
+
+/*
+ * POST routes
+ */
+/*const POST_CONTROLLER = 'PostController';
+const POST = 'post';*/
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+/*
+ * POST VIEWS
+ */
+
+
+Route::get(Post::$route['base'],  "PostController@index");
+
+Route::get(Post::createRoute('view', ['id']),  Post::getController('view'));
+
+//Route::get(Post::$route['base'],  Post::createRoute('list'));

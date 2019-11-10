@@ -1,5 +1,6 @@
 <?php
 
+use App\Post;
 use Illuminate\Http\Request;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get(Post::createRoute('view', ['id']),  Post::getController('view'))->name('post_view');
+
+Route::get(Post::createRoute('list'),  Post::getController('list'))->name('post_list');
+

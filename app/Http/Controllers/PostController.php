@@ -14,13 +14,29 @@ class PostController extends Controller
      */
     public function index()
     {
-        var_dump(Post::createRoute('view', ['id']));
-        var_dump(Post::getController('view'));
+        $posts = Post::with('author', 'comment')
+                        ->where('active', 1)
+                        ->take(1)
+                        ->get();
+
+        foreach($posts as $post){
+            var_dump($post);
+        }
     }
 
 
+    public function vue(){
+        return view('home');
+    }
+
     public function view($id){
-        var_dump('is post view');
+        return response()
+            ->json(Post::with('author')->where('id', $id)->get());
+    }
+
+    public function list(){
+        return response()
+            ->json(Post::paginate(10));
     }
 
     /**

@@ -1,1 +1,17 @@
-//
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+@import 'container';
+
+@import 'spinner';
+
+
+//route change animation
+@import "router-slide";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+

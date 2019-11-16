@@ -3,10 +3,18 @@
         <h1 v-if="this.title">{{this.title}}</h1>
         <h2 v-if="this.author">{{this.author}}</h2>
         <h2 v-if="this.body">{{this.body}}</h2>
+
+        <!-- Comments -->
+
+        <Comments
+                v-bind:id="postID">
+        </Comments>
+
     </div>
 </template>
 
 <script>
+    import Comments from '../comments/List'
 
     export default {
         name: "Post",
@@ -29,13 +37,17 @@
 
         methods: {
             setDataAttributes(response) {
-                console.log(response);
+                //console.log(response);
                 this.title = response.name;
                 this.body = response.body;
                 this.author = response.author.name;
                 this.setSpinnerState(false);
             },
         },
+
+        components:{
+            Comments,
+        }
 
     }
 </script>

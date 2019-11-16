@@ -3,7 +3,7 @@
         <p>
             <router-link :to="{ name: 'home' }">Home</router-link> |
             <router-link :to="{ name: 'hello' }">Hello</router-link> |
-            <router-link :to="{ name: 'posts' }">Posts</router-link>
+            <router-link :to="{ path: '/posts/1' }">Posts</router-link>
         </p>
 
         <br><br><br>

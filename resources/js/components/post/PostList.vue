@@ -26,7 +26,7 @@
 
 <script>
     import PostItem from './PostItem'
-    import Pagination from '../Pagination'
+    import Pagination from '../UI/components/Pagination'
 
     export default {
         name: "PostList",
@@ -40,37 +40,31 @@
         },
 
         mounted() {
-            this.setSpinnerState(true);
-
-            this.$on('paginationChange', function(data) {
-                console.log(data)
-            });
-
-            this.apiRequest('post_list', '', {'page' :  this.$route.params.page})
-                .then(response => response.json())
-                .then(response => this.setDataAttributes(response));
+            this.getPost(this.$route.params.page);
             },
 
         methods:{
             setDataAttributes(response){
-                console.log(response);
-                console.log(response.current_page);
                 this.currentPage = response.current_page;
                 this.lastPage = response.last_page;
                 this.posts = response.data;
                 this.setSpinnerState(false);
             },
 
-            setPostsAttributes(data){
-                console.log(data)
+            getPost(page){
+                this.setSpinnerState(true);
+                this.apiRequest('post_list', '', {'page' : page})
+                    .then(response => response.json())
+                    .then(response => this.setDataAttributes(response));
             },
 
             getPaginationLink(page){
                 this.generateLink('post_list', '',  {'page' : page});
             },
 
-            paginationChange(data){
-                console.log(data);
+            paginationChange(page){
+                this.$router.push({ path: `/posts/${page}` });
+                this.getPost(page);
             }
 
 

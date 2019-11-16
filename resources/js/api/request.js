@@ -1,6 +1,7 @@
 const apiURLS = {
     'post_view' : 'post/view',
     'post_list' : 'post/list',
+    'comment_list_by_post_id' : 'comments'
 };
 
 

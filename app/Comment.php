@@ -11,4 +11,7 @@ class Comment extends Model
     public static function tableName():string {
         return self::TABLE_NAME;
     }
+
+    //get comment author
+    public function user(){ return $this->belongsTo('App\User', 'id'); }
 }

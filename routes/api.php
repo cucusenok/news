@@ -1,6 +1,7 @@
 <?php
 
 use App\Post;
+use App\Comment;
 use Illuminate\Http\Request;
 
 /*
@@ -21,4 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get(Post::createRoute('view', ['id']),  Post::getController('view'))->name('post_view');
 
 Route::get(Post::createRoute('list'),  Post::getController('list'))->name('post_list');
+
+Route::get('comments/{id}',  'CommentController@commentsByPost')->name('post_list');
 

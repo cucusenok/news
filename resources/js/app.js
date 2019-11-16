@@ -30,7 +30,7 @@ Vue.mixin({
 
         setSpinnerState(state){
             const spinner = document.getElementById('spinner');
-            console.log(state);
+            //console.log(state);
             spinner.style.display = state ? 'block' : 'none';
         },
     }

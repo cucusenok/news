@@ -24,4 +24,5 @@ Route::get(Post::createRoute('view', ['id']),  Post::getController('view'))->nam
 Route::get(Post::createRoute('list'),  Post::getController('list'))->name('post_list');
 
 Route::get('comments/{id}',  'CommentController@commentsByPost')->name('post_list');
+//Route::get('comment/children/{id}',  'CommentController@commentsByPost')->name('post_list');
 

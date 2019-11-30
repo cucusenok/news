@@ -12,6 +12,11 @@ class Comment extends Model
         return self::TABLE_NAME;
     }
 
+    public function children()
+    {
+        return $this->hasMany(self::TABLE_NAME, 'parent_id');
+    }
+
     //get comment author
     public function user(){ return $this->belongsTo('App\User', 'id'); }
 }

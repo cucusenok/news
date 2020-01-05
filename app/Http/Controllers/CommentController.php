@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
     public function commentsByPost($id)
     {
+
         $comments = Comment::with('user')
-            ->where('post_id', '=', $id)
+            ->where(   'post_id', '=', $id)
             ->where('parent_id', '=', 0)
-            ->get();
+            ->paginate(1);
 
 
-        dd($comments);
-        die();
+        //dd($comments);
+        //die();
         return response()->json($comments);
     }
 

@@ -594,6 +594,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PostItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PostItem */ "./resources/js/components/post/PostItem.vue");
 /* harmony import */ var _UI_components_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UI/components/Pagination */ "./resources/js/components/UI/components/Pagination.vue");
+/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../store/types */ "./resources/js/store/types.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -617,40 +625,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PostList",
-  data: function data() {
-    return {
-      currentPage: 1,
-      lastPage: false,
-      posts: false
-    };
-  },
   mounted: function mounted() {
-    this.getPost(this.$route.params.page);
+    this.loadPosts(this.$route.params.page);
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])({
+    posts: function posts(state) {
+      return state.posts.all;
+    },
+    currentPage: function currentPage(state) {
+      return state.posts.currentPage;
+    },
+    lastPage: function lastPage(state) {
+      return state.posts.lastPage;
+    }
+  })),
+  watch: {
+    posts: function posts(_posts) {
+      if (_posts.length > 0) this.$store.dispatch(_store_types__WEBPACK_IMPORTED_MODULE_2__["SPINNER_STOP"]);
+    }
   },
   methods: {
-    setDataAttributes: function setDataAttributes(response) {
-      this.currentPage = response.current_page;
-      this.lastPage = response.last_page;
-      this.posts = response.data;
-      this.setSpinnerState(false);
-    },
-    getPost: function getPost(page) {
-      var _this = this;
-
-      this.setSpinnerState(true);
-      this.apiRequest('post_list', '', {
-        'page': page
-      }).then(function (response) {
-        return response.json();
-      }).then(function (response) {
-        return _this.setDataAttributes(response);
+    loadPosts: function loadPosts(page) {
+      this.$store.dispatch(_store_types__WEBPACK_IMPORTED_MODULE_2__["SPINNER_RUN"]);
+      this.$store.dispatch(_store_types__WEBPACK_IMPORTED_MODULE_2__["GET_ALL_POSTS"], {
+        page: page
       });
     },
     getPaginationLink: function getPaginationLink(page) {
@@ -18443,6 +18447,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vue_components_routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vue-components/routes */ "./resources/js/vue-components/routes.js");
 /* harmony import */ var _vue_components_mixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vue-components/mixin */ "./resources/js/vue-components/mixin.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -18450,10 +18455,24 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.devtools = true;
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
     App: _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapState"])(['state']),
+  created: function created() {
+    var _this = this;
+
+    this.$store.subscribe(function (mutation, state) {
+      if (mutation.type === 'spinner_update_state') {
+        state.spinner.state ? _this.spinnerRun() : _this.spinnerStop();
+      }
+
+      ;
+    });
   },
   router: _vue_components_routes__WEBPACK_IMPORTED_MODULE_3__["default"],
   mixins: [_vue_components_mixin__WEBPACK_IMPORTED_MODULE_4__],
@@ -19318,13 +19337,20 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./resources/js/store/types.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/* harmony import */ var _api_request__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/request */ "./resources/js/api/request.js");
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["UPDATE_POST_ALL"], function (_ref, payload) {
-  var commit = _ref.commit;
-  commit(_types__WEBPACK_IMPORTED_MODULE_0__["MUTATE_POST_ALL"], payload);
-}));
+/* harmony default export */ __webpack_exports__["default"] = ({
+  /*    [types.UPDATE_POST_ALL]: ({commit}, payload) => {
+          commit(types.MUTATE_ALL_POSTS, payload)
+      },
+  
+      [types.GET_ALL_POSTS]: ({commit}, payload) => {
+          let {data} = apiRequest('post_list', '', {'page' : payload.page})
+              .then(response => response.json())
+              .then(response => commit(types.SET_ALL_POSTS, response));
+      },*/
+});
 
 /***/ }),
 
@@ -19338,23 +19364,110 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./resources/js/store/types.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["POSTS_ALL"], function (state) {
-  return state.posts_all;
-}));
+/* harmony default export */ __webpack_exports__["default"] = ({
+  /*    [types.ALL_POSTS]: state => {
+          return state.all_posts;
+      }*/
+});
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/counter.js":
+/***/ "./resources/js/store/modules/posts.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/posts.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./resources/js/store/types.js");
+/* harmony import */ var _api_request__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/request */ "./resources/js/api/request.js");
+var _actions;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var posts = {
+  state: {
+    //the all posts by filters or pagination
+    all: [],
+    //the current selected post
+    post: {},
+    //the current posts page
+    currentPage: 1,
+    lastPage: 1
+  },
+  mutations: _defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["SET_ALL_POSTS"], function (state, payload) {
+    state.all = payload.data;
+    state.currentPage = payload.current_page;
+    state.lastPage = payload.last_page;
+  }),
+  actions: (_actions = {}, _defineProperty(_actions, _types__WEBPACK_IMPORTED_MODULE_0__["UPDATE_POST_ALL"], function (_ref, payload) {
+    var commit = _ref.commit;
+    commit(_types__WEBPACK_IMPORTED_MODULE_0__["MUTATE_ALL_POSTS"], payload);
+  }), _defineProperty(_actions, _types__WEBPACK_IMPORTED_MODULE_0__["GET_ALL_POSTS"], function (_ref2, payload) {
+    var commit = _ref2.commit;
+
+    var _apiRequest$then$then = Object(_api_request__WEBPACK_IMPORTED_MODULE_1__["apiRequest"])('post_list', '', {
+      'page': payload.page
+    }).then(function (response) {
+      return response.json();
+    }).then(function (response) {
+      return commit(_types__WEBPACK_IMPORTED_MODULE_0__["SET_ALL_POSTS"], response);
+    }),
+        data = _apiRequest$then$then.data;
+  }), _actions),
+  getters: _defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["ALL_POSTS"], function (state) {
+    return state.all_posts;
+  })
+};
+/* harmony default export */ __webpack_exports__["default"] = (posts);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/spinner.js":
 /*!***********************************************!*\
-  !*** ./resources/js/store/modules/counter.js ***!
+  !*** ./resources/js/store/modules/spinner.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./resources/js/store/types.js");
+/* harmony import */ var _api_request__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/request */ "./resources/js/api/request.js");
+var _actions;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
+var spinner = {
+  state: {
+    state: false
+  },
+  mutations: _defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_UPDATE_STATE"], function (state, payload) {
+    state.state = payload.state;
+  }),
+  actions: (_actions = {}, _defineProperty(_actions, _types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_RUN"], function (_ref, payload) {
+    var commit = _ref.commit;
+    commit(_types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_UPDATE_STATE"], {
+      state: true
+    });
+  }), _defineProperty(_actions, _types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_STOP"], function (_ref2, payload) {
+    var commit = _ref2.commit;
+    commit(_types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_UPDATE_STATE"], {
+      state: false
+    });
+  }), _actions),
+  getters: _defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["SPINNER_STATE"], function (state) {
+    return state.state;
+  })
+};
+/* harmony default export */ __webpack_exports__["default"] = (spinner);
 
 /***/ }),
 
@@ -19368,12 +19481,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./resources/js/store/types.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({}, _types__WEBPACK_IMPORTED_MODULE_0__["MUTATE_POST_ALL"], function (state, payload) {
-  state.value = payload;
-}));
+/* harmony default export */ __webpack_exports__["default"] = ({
+  /*    [types.SET_ALL_POSTS]: (state, payload) => {
+          state.all_posts = payload;
+      },
+  
+      increment (state) {
+          state.count++
+      }*/
+});
 
 /***/ }),
 
@@ -19390,11 +19507,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modules_counter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/counter */ "./resources/js/store/modules/counter.js");
-/* harmony import */ var _modules_counter__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_modules_counter__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
-/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
-/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
+/* harmony import */ var _modules_posts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/posts */ "./resources/js/store/modules/posts.js");
+/* harmony import */ var _modules_spinner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/spinner */ "./resources/js/store/modules/spinner.js");
+
 
 
 
@@ -19404,13 +19522,15 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    value: 0
+    all_posts: [],
+    count: 0
   },
-  getters: _getters__WEBPACK_IMPORTED_MODULE_5__["default"],
-  mutations: _mutations__WEBPACK_IMPORTED_MODULE_6__["default"],
-  actions: _actions__WEBPACK_IMPORTED_MODULE_4__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_3__["default"],
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_4__["default"],
+  actions: _actions__WEBPACK_IMPORTED_MODULE_2__["default"],
   modules: {
-    counter: _modules_counter__WEBPACK_IMPORTED_MODULE_3___default.a
+    posts: _modules_posts__WEBPACK_IMPORTED_MODULE_5__["default"],
+    spinner: _modules_spinner__WEBPACK_IMPORTED_MODULE_6__["default"]
   }
 });
 
@@ -19420,20 +19540,39 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*!*************************************!*\
   !*** ./resources/js/store/types.js ***!
   \*************************************/
-/*! exports provided: POSTS_ALL, MUTATE_POST_ALL, UPDATE_POST_ALL */
+/*! exports provided: ALL_POSTS, SPINNER_STATE, MUTATE_ALL_POSTS, SET_ALL_POSTS, SPINNER_UPDATE_STATE, UPDATE_POST_ALL, GET_ALL_POSTS, SPINNER_RUN, SPINNER_STOP */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POSTS_ALL", function() { return POSTS_ALL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MUTATE_POST_ALL", function() { return MUTATE_POST_ALL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALL_POSTS", function() { return ALL_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPINNER_STATE", function() { return SPINNER_STATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MUTATE_ALL_POSTS", function() { return MUTATE_ALL_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ALL_POSTS", function() { return SET_ALL_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPINNER_UPDATE_STATE", function() { return SPINNER_UPDATE_STATE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_POST_ALL", function() { return UPDATE_POST_ALL; });
-// Getters
-var POSTS_ALL = 'posts/all'; // Mutations
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ALL_POSTS", function() { return GET_ALL_POSTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPINNER_RUN", function() { return SPINNER_RUN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPINNER_STOP", function() { return SPINNER_STOP; });
+// <==== Getters ===>
+// === POSTS ===
+var ALL_POSTS = 'all_posts'; // === SPINNER ===
 
-var MUTATE_POST_ALL = 'posts/MUTATE_POST_ALL'; // Actions
+var SPINNER_STATE = 'spinner_state'; // <=== Mutations ===>
+// === POSTS ===
+
+var MUTATE_ALL_POSTS = 'mutate_all_posts';
+var SET_ALL_POSTS = 'set_all_posts'; // === SPINNER ===
+
+var SPINNER_UPDATE_STATE = 'spinner_update_state'; // <=== END Mutations ===>
+//  === Actions ===
+//  === POSTS ===
 
 var UPDATE_POST_ALL = 'posts/UPDATE_POST_ALL';
+var GET_ALL_POSTS = 'get_all_posts'; //  === SPINNER ===
+
+var SPINNER_RUN = 'spinner_run';
+var SPINNER_STOP = 'spinner_stop';
 
 /***/ }),
 
@@ -19465,6 +19604,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
       //element exist ever, creating by backend
       var spinner = document.getElementById('spinner');
       spinner.style.display = state ? 'block' : 'none';
+    },
+    spinnerRun: function spinnerRun() {
+      console.log('spinner run');
+      this.setSpinnerState(true);
+    },
+    spinnerStop: function spinnerStop() {
+      console.log('spinner down');
+      this.setSpinnerState(false);
     }
   }
 });

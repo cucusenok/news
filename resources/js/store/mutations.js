@@ -1,7 +1,12 @@
 import * as types from './types';
 
 export default {
-    [types.MUTATE_POST_ALL]: (state, payload) => {
-        state.value = payload;
-    }
+/*    [types.SET_ALL_POSTS]: (state, payload) => {
+        state.all_posts = payload;
+    },
+
+    increment (state) {
+        state.count++
+    }*/
+
 };

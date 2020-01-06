@@ -5,7 +5,7 @@ const state = {
 };
 
 const getters = {
-    [types.POSTS_ALL]: state => {
+    [types.ALL_POSTS]: state => {
         return state.counter * 2;
     },
 };
@@ -17,7 +17,7 @@ const mutations = {
 };
 
 const actions = {
-    [types.POSTS_ALL]: ({ commit }, payload) => {
+    [types.ALL_POSTS]: ({ commit }, payload) => {
         commit(types.MUTATE_POST_ALL, payload);
     },
 };

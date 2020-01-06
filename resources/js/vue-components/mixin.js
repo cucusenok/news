@@ -17,5 +17,16 @@ Vue.mixin({
             const spinner = document.getElementById('spinner');
             spinner.style.display = state ? 'block' : 'none';
         },
+
+        spinnerRun(){
+            console.log('spinner run');
+            this.setSpinnerState(true);
+        },
+
+        spinnerStop(){
+            console.log('spinner down');
+            this.setSpinnerState(false);
+        }
+
     }
 });

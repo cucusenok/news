@@ -14,13 +14,29 @@ class PostController extends Controller
      */
     public function index()
     {
-        var_dump(Post::createRoute('view', ['id']));
-        var_dump(Post::getController('view'));
+        $posts = Post::with('author', 'comment')
+                        ->where('active', 1)
+                        ->take(1)
+                        ->get();
+
+        foreach($posts as $post){
+            var_dump($post);
+        }
     }
 
 
+    public function vue(){
+        return view('home');
+    }
+
     public function view($id){
-        var_dump('is post view');
+        return response()
+            ->json(Post::with('author')->where('id', $id)->get());
+    }
+
+    public function list(){
+        return response()
+            ->json(Post::paginate(10));
     }
 
     /**
@@ -39,53 +55,29 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function new(Request $request)
     {
-        //
+        //dd($request->all());die;
+
+        $post = new Post();
+        $fillableFields = $request->only($post->getFillable());
+        $fillableFields['active'] = 1;
+
+        $post->fill( $fillableFields );
+
+        try {
+            $post->save();
+            return response()
+                ->json(
+                    ['status' => 'ok', 'Save success']
+                );
+        }
+        catch (\Exception $ex ) {
+            return response()
+                ->json( ['status' => 'error', 'msg' => $ex->getMessage(), ] );
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
 }

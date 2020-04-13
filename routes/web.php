@@ -19,6 +19,7 @@ use App\Post;
 const POST = 'post';*/
 
 
+Route::get('/{any}', 'SpaController@index')->where('any', '.*');
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +34,14 @@ Route::get('/', function () {
 
 Route::get(Post::$route['base'],  "PostController@index");
 
-Route::get(Post::createRoute('view', ['id']),  Post::getController('view'));
+Route::get(Post::createRoute('view', ['id']),  Post::getController('view'))->name('post-view');
 
 //Route::get(Post::$route['base'],  Post::createRoute('list'));
+
+Route::get('vue',  "PostController@vue");
+
+Auth::routes();
+
+
+
+Route::get('/home', 'HomeController@index')->name('home');

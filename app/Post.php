@@ -2,20 +2,49 @@
 
 namespace App;
 
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Post
+ * @package App
+ *
+ * @property string name
+ * @property string body
+ */
 class Post extends Model
 {
+
+    const TABLE_NAME = 'posts';
+
     const BASE_CONTROLLER = 'controller';
     const BASE = 'base';
 
-   public static $route = [
+    protected $fillable = ['name', 'body', 'author_id', 'active'];
+
+
+    public static $route = [
        'base' => 'post',
        'controller' => 'PostController',
-       'list' => 'index',
+       'list' => 'list',
        'view' => 'view',
    ];
 
+
+
+
+    public function validate(){
+
+    }
+
+
+
+    /**
+     * @param Request $request
+     */
+   public function loadRequest(Request $request) : void {
+
+   }
 
 
    public static function createRouteByParams(array $params) : string {
@@ -37,6 +66,22 @@ class Post extends Model
        $controller = $controller ? $controller : self::BASE_CONTROLLER;
        return static::$route[$controller] . '@' . static::$route[$view];
    }
+
+
+   public static function tableName():string {
+       return self::TABLE_NAME;
+   }
+
+
+
+    public function author()
+    {
+        return $this->hasOne('App\User', 'id', 'author_id');
+    }
+
+    public function comment(){
+       return $this->hasMany('App\Comment');
+    }
 
 
 

@@ -36,7 +36,7 @@
 
         methods:{
             getComments(id){
-                console.log(id);
+                //console.log(id);
             },
 
             setDataAttributes(response){

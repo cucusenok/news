@@ -2,8 +2,16 @@
 
 namespace App;
 
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Post
+ * @package App
+ *
+ * @property string name
+ * @property string body
+ */
 class Post extends Model
 {
 
@@ -12,13 +20,31 @@ class Post extends Model
     const BASE_CONTROLLER = 'controller';
     const BASE = 'base';
 
-   public static $route = [
+    protected $fillable = ['name', 'body', 'author_id', 'active'];
+
+
+    public static $route = [
        'base' => 'post',
        'controller' => 'PostController',
        'list' => 'list',
        'view' => 'view',
    ];
 
+
+
+
+    public function validate(){
+
+    }
+
+
+
+    /**
+     * @param Request $request
+     */
+   public function loadRequest(Request $request) : void {
+
+   }
 
 
    public static function createRouteByParams(array $params) : string {

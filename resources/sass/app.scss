@@ -9,9 +9,18 @@
 @import 'spinner';
 
 
+//import base
+@import "ui/_base";
+
+//import pages styles
+@import "new-page/new-page";
+
+
 //route change animation
 @import "router-slide";
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+//node modules
+@import "../../node_modules/vue-multiselect/dist/vue-multiselect.min.css";

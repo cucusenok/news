@@ -1,0 +1,63 @@
+
+
+.post-form {
+
+  $formGreenColor:#0eb10e;
+  $formBlueColor:#2b87b8;
+
+  margin-top: 40px;
+
+  .ck-editor {
+    border: 2px solid $formBlueColor !important;
+  }
+
+  .multiselect{
+    border: 2px solid $formBlueColor !important;
+  }
+
+  &__group {
+    position: relative;
+    display: flex;
+
+    &-title {
+      font-size: 1.3rem;
+    }
+
+    &-label {
+      position: absolute;
+      color: #6096ce;
+      margin: 0.2rem 0.5rem;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+
+    &-input {
+      height: 3rem;
+      border: 2px solid $formBlueColor;
+      text-align: center;
+      font-size: 1.3rem;
+
+      &:focus{
+        +label {
+          font-size: 0.8rem;
+        }
+      }
+
+      &:valid {
+        border: 2px solid $formGreenColor;
+
+        +label {
+          font-size: 0.8rem;
+          color:$formGreenColor;
+        }
+      }
+
+    }
+
+
+
+  }
+
+
+}

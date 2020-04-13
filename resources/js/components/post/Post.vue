@@ -2,7 +2,7 @@
     <div>
         <h1 v-if="this.title">{{this.title}}</h1>
         <h2 v-if="this.author">{{this.author}}</h2>
-        <h2 v-if="this.body">{{this.body}}</h2>
+        <h2 v-if="this.body" v-html="this.body">{{this.body}}</h2>
 
         <!-- Comments -->
 

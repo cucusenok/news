@@ -5,7 +5,7 @@
 
         <div class="post-body">
             <h2>{{post.name}}</h2>
-            <h4>{{post.body}}</h4>
+            <h4 v-html="post.body">{{post.body}}</h4>
         </div>
 
     </div>

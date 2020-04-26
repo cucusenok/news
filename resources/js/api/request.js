@@ -3,7 +3,8 @@ const apiURLS = {
     'post_list' : 'post/list',
     'post_new' : 'post/new',
     'post_image_upload' : 'media/post_image_upload',
-    'comment_list_by_post_id' : 'comments'
+    'comment_list_by_post_id' : 'comments',
+    'login' : 'login',
 };
 
 

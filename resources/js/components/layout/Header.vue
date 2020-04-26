@@ -23,7 +23,7 @@
                 <div class="menu-container__item mr-20">
                     <router-link :to="{ path: '/profile' }">Profile</router-link>
                 </div>
-                <div class="menu-container__right-item" @click="backButtonClick">Назад</div>
+                <div class="menu-container__right-item" @click="backButtonClick">Back</div>
             </div>
 
         </div>
@@ -60,6 +60,8 @@
     }
 
     .menu-container {
+        font-family: Ubuntu;
+        font-weight: bold;
         width: 1120px;
         display: flex;
         justify-content: space-between;

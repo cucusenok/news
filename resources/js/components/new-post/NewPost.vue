@@ -50,7 +50,7 @@
 
                     <div class="upload-image">
                         <div class="upload-image__container">
-                            <div v-for="img in uploadImages" class="upload-image__item">
+                            <div v-for="img in uploadImagesUrls" class="upload-image__item">
                                 <img v-bind:src="img" alt="" width="200">
                             </div>
                         </div>
@@ -102,7 +102,8 @@
 
         data() {
             return {
-                uploadImages: [],
+                uploadImagesUrls: [],
+                uploadBase64Images: [],
                 editor: ClassicEditor,
                 value: null,
                 options: [
@@ -125,10 +126,17 @@
 
             onFileChanged (event) {
                 const file = event.target.files[0];
-                let fileReader = new FileReader();
-                console.log(file)
+                //let fileReader = new FileReader();
+
                 let image = URL.createObjectURL(file);
-                this.uploadImages.push(image);
+
+                /**
+                 * When convert file to base64 push to images for sending
+                 */
+                this.toBase64( file )
+                    .then( base64File => this.uploadBase64Images.push(base64File) );
+
+                this.uploadImagesUrls.push(image);
             },
 
             uploadImageSubmit: function(images){
@@ -141,7 +149,7 @@
                 if(!this.title) this.errors.push('Please, enter the title');
                 if(!this.postCategories.length) this.errors.push('Please, select category');
                 if(!this.mainText) this.errors.push('Please, enter the main post text');
-                if(!this.uploadImages) this.errors.push('Please, upload the post image');
+                if(!this.uploadImagesUrls) this.errors.push('Please, upload the post image');
                 //TODO: call show messages
                 return !this.errors.length;
             },
@@ -154,10 +162,9 @@
                     body: this.mainText,
                     author_id: 1,
                     categories: this.postCategories.map(category => category.id),
-                    post_image: this.uploadImages[0],
+                    post_image: this.uploadBase64Images[0],
                 }
 
-                console.log('aafgfafasafsafs')
 
                 this.apiRequest('post_new', postData, { method: 'POST' })
                     .then(response => response.json())

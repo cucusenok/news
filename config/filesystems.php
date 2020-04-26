@@ -48,6 +48,15 @@ return [
             'root' => storage_path('app'),
         ],
 
+
+        'postMainImages' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/postMainImages'),
+            'url' => '/storage/postMainImages',
+            'visibility' => 'public',
+        ],
+
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

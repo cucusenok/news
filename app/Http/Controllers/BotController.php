@@ -23,7 +23,7 @@ class BotController
 
     public function vk(){
 
-        $vkClient = new VkClient(new GuzzleHttpAdapter());
+        $vkClient = new VkClient(new CurlHttpAdapter());
 
         $response = $vkClient->sendMsgToUser('Hello from yii2, %username%', 250476354);
 
@@ -110,7 +110,11 @@ class BotController
     }
 
 
+
+
+
     public function spam(){
+
 
         $users = User::all();
 
@@ -132,7 +136,7 @@ class BotController
         $socialsNetworkClients = array(
             new VkClient(new CurlHttpAdapter()),
             new TelegramClient(new CurlHttpAdapter()),
-            new MailClient()
+            new MailClient(),
         );
 
         (new SpammerQueueCreator( $users, $socialsNetworkClients )) -> create();

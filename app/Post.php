@@ -4,6 +4,8 @@ namespace App;
 
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\library\media\ImageManager;
+use App\PostMedia;
 
 /**
  * Class Post
@@ -31,20 +33,21 @@ class Post extends Model
    ];
 
 
-
-
+    /**
+     * TODO: realise model field validation
+     */
     public function validate(){
 
     }
 
 
-
     /**
-     * @param Request $request
+     * @string $mainImage blob
      */
-   public function loadRequest(Request $request) : void {
-
-   }
+    public function saveMainImage($mainImage) {
+        $postMedia = new PostMedia();
+        return $postMedia->saveMainImage($mainImage);
+    }
 
 
    public static function createRouteByParams(array $params) : string {

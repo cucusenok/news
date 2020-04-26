@@ -21,6 +21,7 @@ import Post  from "./components/post/Post"
 import PostList from "./components/post/PostList"
 import NewPost from "./components/new-post/NewPost"
 import Profile from "./components/user/Profile"
+import Login from "./components/users/Login";
 //import CKEditor from '@ckeditor/ckeditor5-vue'
 
 
@@ -38,6 +39,7 @@ const router = new VueRouter({
         { path: '/post/:id',  name: 'post', component: Post },
         { path: '/new-post',  name: 'new-post', component: NewPost},
         { path: '/profile',  name: 'Profile', component: Profile},
+        { path: '/login',  name: 'Login', component: Login},
     ],
 });
 
@@ -53,6 +55,31 @@ Vue.mixin({
             //console.log(state);
             spinner.style.display = state ? 'block' : 'none';
         },
+
+        toBase64( file ) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            }
+        )},
+
+         loginRoutine( user ) {
+            return  new Promise ((resolve, reject) => {
+                 this.apiRequest( 'login',  { data:user },  { method:'POST' } )
+                     .then(resp => {
+                         const token = resp.data.token
+                         localStorage.setItem('user-token', token) // store the token in localstorage
+                         resolve(resp)
+                     })
+                     .catch(err => {
+                         localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+                         reject(err)
+                     })
+             })
+         }
+
     }
 });
 

@@ -29,6 +29,7 @@ class SpamJob implements ShouldQueue
         $this->spammer = $userSpammer;
     }
 
+
     /**
      * Execute the job.
      *

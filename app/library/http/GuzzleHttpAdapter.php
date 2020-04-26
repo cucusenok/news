@@ -12,7 +12,7 @@ use App\library\http\Response;
 class GuzzleHttpAdapter implements IHttpClient
 {
 
-    public GuzzleClient $guzzleClient;
+    private GuzzleClient $guzzleClient;
 
     public function __construct(array $params = array())
     {

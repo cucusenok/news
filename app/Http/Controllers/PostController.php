@@ -35,8 +35,16 @@ class PostController extends Controller
     }
 
     public function list(){
-        return response()
-            ->json(Post::paginate(10));
+        try {
+
+            return response()
+                ->json(Post::paginate(10));
+
+        } catch (\Exception $exception){
+
+            return [ 'status' => 'error' ];
+
+        }
     }
 
     /**
@@ -48,6 +56,7 @@ class PostController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -66,7 +75,14 @@ class PostController extends Controller
         $post->fill( $fillableFields );
 
         try {
+            $postMedia = $post->saveMainImage($request->post('post_image'));
+
             $post->save();
+
+            $postMedia->post_id = $post->id;
+            $postMedia->post_media_type = 1;
+            $postMedia->save();
+
             return response()
                 ->json(
                     ['status' => 'ok', 'Save success']

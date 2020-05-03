@@ -25,8 +25,7 @@
                 </div>
 
 
-                <div
-                        v-if="userAuth"
+                <div v-if="userAuth"
                         v-on:click="logout"
                         class="menu-container__item mr-20">
                     <a>Logout</a>

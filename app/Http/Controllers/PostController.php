@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -35,6 +36,7 @@ class PostController extends Controller
     }
 
     public function list(){
+
         try {
 
             return response()

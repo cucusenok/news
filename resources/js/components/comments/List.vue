@@ -33,14 +33,14 @@
             this.getComments(this.id);
         },
 
-
         methods:{
             getComments(id){
                 //console.log(id);
             },
 
             setDataAttributes(response){
-                this.comments = response;
+                console.log(response);
+                this.comments = response.data[0];
             }
         },
 

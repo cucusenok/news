@@ -1,5 +1,6 @@
 <template>
     <div>
+
         This is card of user.
     </div>
 </template>

@@ -1,7 +1,6 @@
 <template>
 
     <div class="post-list-container">
-
         <h1 v-if="posts">Список постов</h1>
 
         <PostItem
@@ -20,42 +19,39 @@
 
     </div>
 
-
-
 </template>
 
 <script>
     import PostItem from './PostItem'
     import Pagination from '../UI/components/Pagination'
+    import * as types from '../../store/types'
+    import {mapState} from 'vuex';
 
     export default {
         name: "PostList",
 
-        data: function(){
-            return{
-                currentPage:1,
-                lastPage:false,
-                posts: false,
-            }
-        },
 
         mounted() {
-            this.getPost(this.$route.params.page);
-            },
+            this.loadPosts(this.$route.params.page);
+        },
+
+        computed: {
+            ...mapState({
+                posts: state => state.posts.all,
+                currentPage: state => state.posts.currentPage,
+                lastPage: state => state.posts.lastPage,
+            }),
+        },
+
+        watch: {
+            posts: function(posts){ if(posts.length > 0) this.$store.dispatch(types.SPINNER_STOP) },
+        },
 
         methods:{
-            setDataAttributes(response){
-                this.currentPage = response.current_page;
-                this.lastPage = response.last_page;
-                this.posts = response.data;
-                this.setSpinnerState(false);
-            },
 
-            getPost(page){
-                this.setSpinnerState(true);
-                this.apiRequest('post_list', '', {'page' : page})
-                    .then(response => response.json())
-                    .then(response => this.setDataAttributes(response));
+            loadPosts(page){
+                this.$store.dispatch(types.SPINNER_RUN);
+                this.$store.dispatch(types.GET_ALL_POSTS, {page:page});
             },
 
             getPaginationLink(page){

@@ -21,12 +21,12 @@
 
                     <div class="auth-login">
                         <div class="form-label" >Login</div>
-                        <input class="form-input" type="text">
+                        <input v-model="loginInput" class="form-input" type="text">
                     </div>
 
                     <div class="auth-password">
                         <div class="form-label">Password</div>
-                        <input class="form-input" type="text">
+                        <input v-model="password" class="form-input" type="text">
                     </div>
 
                     <div class="login-btn">
@@ -44,9 +44,17 @@
 </template>
 
 <script>
+    import * as types from '../../store/types';
+
     export default {
         name: "Login",
 
+        data(){
+            return{
+                loginInput: '',
+                password: '',
+            }
+        },
 
         methods: {
 
@@ -54,13 +62,20 @@
                 console.log(event.target);
             },
 
-            login: function () {
-                const {username, password} = this
+            loginFormValidate: function() {
+                if(!this.loginInput) { alert('Login is empty'); return false }
+                if(!this.password) { alert('Password is empty'); return false }
 
-                this.$store.dispatch(AUTH_REQUEST, {username, password}).then(() => {
-                    this.$router.push('/')
-                })
+                return true;
             },
+
+            login: function () {
+                if(!this.loginFormValidate()) return
+
+                this.$store.dispatch(types.AUTH_REQUEST, { 'email': this.loginInput, 'password': this.password }).then(() => {
+                    this.$router.back()
+                })
+            }
 
         },
 

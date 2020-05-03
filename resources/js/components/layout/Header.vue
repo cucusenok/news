@@ -20,8 +20,20 @@
             </div>
 
             <div class="menu-container__right">
-                <div class="menu-container__item mr-20">
+                <div v-if="userAuth" class="menu-container__item mr-20">
                     <router-link :to="{ path: '/profile' }">Profile</router-link>
+                </div>
+
+
+                <div
+                        v-if="userAuth"
+                        v-on:click="logout"
+                        class="menu-container__item mr-20">
+                    <a>Logout</a>
+                </div>
+
+                <div v-if="!userAuth" class="menu-container__item mr-20">
+                    <router-link :to="{ path: '/login' }">Login</router-link>
                 </div>
                 <div class="menu-container__right-item" @click="backButtonClick">Back</div>
             </div>
@@ -35,6 +47,10 @@
 </template>
 
 <script>
+
+    import store from "../../store/store"
+    import * as types from "../../store/types"
+
     export default {
         name: "Header",
 
@@ -42,9 +58,19 @@
 
             backButtonClick() {
                 this.$router.go(-1);
-            }
+            },
+
+            logout(){
+                this.$store.dispatch(types.AUTH_LOGOUT)
+            },
 
         },
+
+        computed: {
+            userAuth: function () {
+                return store.getters.isAuth;
+            }
+        }
 
     }
 

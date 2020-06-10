@@ -3,8 +3,8 @@
 
     <div class="container">
 
-        <div class="page-title">
-            Create new post
+        <div class="page-title fl-upper">
+            {{$t("message.create_new_post")}}
         </div>
 
         <div class="post-form-container">
@@ -15,7 +15,7 @@
             >
                 <div class="post-form" >
 
-                    <div class="post-form__group-title">Wtire post title</div>
+                    <div class="post-form__group-title fl-upper">{{$t("message.write_post_title")}}</div>
                     <div class="post-form__group">
                         <input
                             v-model="title"
@@ -25,18 +25,18 @@
                             align="bottom"
                         required/>
 
-                        <label class="post-form__group-label">Title</label>
+                        <label class="post-form__group-label fl-upper">{{$t("message.title")}}</label>
                     </div>
 
                     <br>
-                    <div class="post-form__group-title">Enter main text</div>
+                    <div class="post-form__group-title fl-upper">{{$t("message.enter_main_text")}}</div>
                     <ckeditor
                             :editor="editor"
                             v-model="mainText"
                     ></ckeditor>
                     <br>
 
-                    <div class="post-form__group-title">Select categories</div>
+                    <div class="post-form__group-title">{{$t("message.select_categories")}}</div>
                     <multiselect
                             placeholder="Select categories"
                             v-model="postCategories"
@@ -58,7 +58,7 @@
                         <br><br>
 
                         <div class="upload-image__btn">
-                            <button onclick="document.getElementById('getFile').click()">Upload Post Image</button>
+                            <button class="fl-upper" onclick="document.getElementById('getFile').click()">{{$t("message.upload_image")}}</button>
                             <input type='file' id="getFile" style="display:none" accept=".jpg, .jpeg, .png" @change="onFileChanged">
                         </div>
 <!--
@@ -67,8 +67,8 @@
                     </div>
 
 
-                    <div>
-                        <button >Get values</button>
+                    <div class="btn-save-container">
+                        <button class="save-btn" >{{$t("message.save")}}</button>
                     </div>
 
                 </div>
@@ -98,7 +98,6 @@
         mounted() {
           this.uploadImageLink = this.generateLink('post_image_upload');
         },
-
 
         data() {
             return {
@@ -177,6 +176,20 @@
 </script>
 
 <style scoped lang="scss">
+
+    .btn-save-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 40px;
+    }
+
+    .save-btn {
+        padding: 10px 30px;
+        background: #20cd20;
+        border: none;
+        color: white;
+        border-radius: 10px;
+    }
 
     .upload-image {
 

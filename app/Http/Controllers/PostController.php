@@ -36,11 +36,10 @@ class PostController extends Controller
     }
 
     public function list(){
-
         try {
 
             return response()
-                ->json(Post::paginate(10));
+                ->json(Post::with('author')->paginate(10));
 
         } catch (\Exception $exception){
 

@@ -21,7 +21,6 @@ class CreateMediaTable extends Migration
             $table->tinyInteger('type')->comment('File type 1 - image, 2 - video');
         });
 
-
     }
 
     /**
@@ -33,4 +32,5 @@ class CreateMediaTable extends Migration
     {
         Schema::dropIfExists('media');
     }
+
 }

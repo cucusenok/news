@@ -4,7 +4,7 @@
 namespace App\library\http;
 
 
-class Response
+final class Response
 {
     private string $status;
     private string $statusCode;

@@ -1,20 +1,26 @@
 <template>
 
-    <div class="post-list-container">
-        <h1 v-if="posts">Список постов</h1>
+    <div>
 
-        <PostItem
-                  v-for="post in posts"
-                  v-bind:post="post"
-                  v-bind:key="post.id">
-        </PostItem>
+        <div class="page-title">
+            <h1 class="fl-upper" v-if="posts">{{ $t("message.post_list") }}</h1>
+        </div>
 
+        <div class="post-list-container">
+
+            <PostItem
+                    v-for="post in posts"
+                    v-bind:post="post"
+                    v-bind:key="post.id">
+            </PostItem>
+
+        </div>
 
         <Pagination
-            v-bind:currentPage="currentPage"
-            v-bind:lastPage="lastPage"
-            v-bind:routePath="'posts'"
-            v-on:paginationChange="paginationChange">
+                v-bind:currentPage="currentPage"
+                v-bind:lastPage="lastPage"
+                v-bind:routePath="'posts'"
+                v-on:paginationChange="paginationChange">
         </Pagination>
 
     </div>
@@ -75,5 +81,9 @@
 </script>
 
 <style scoped>
-
+    .post-list-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
 </style>

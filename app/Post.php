@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Jobs\TextClassificationJob;
+use App\library\http\CurlHttpAdapter;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\library\media\ImageManager;
 use App\PostMedia;
+use Illuminate\Support\Facades\Storage;
+use App\library\classification\DocToVecLogRegClassifierService;
 
 /**
  * Class Post
@@ -23,6 +27,7 @@ class Post extends Model
     const BASE = 'base';
 
     protected $fillable = ['name', 'body', 'author_id', 'active'];
+    protected $appends = ['main_image'];
 
 
     public static $route = [
@@ -37,6 +42,28 @@ class Post extends Model
      * TODO: realise model field validation
      */
     public function validate(){
+
+    }
+
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function($model){
+
+            dispatch(
+                new TextClassificationJob(
+                    new DocToVecLogRegClassifierService
+                    (
+                        new CurlHttpAdapter(),
+                        $model
+                    )
+                )
+            );
+
+        });
 
     }
 
@@ -80,6 +107,29 @@ class Post extends Model
     public function author()
     {
         return $this->hasOne('App\User', 'id', 'author_id');
+    }
+
+    public function getMainImageAttribute() : string
+    {
+
+        if(!isset($this->image->media)) return '';
+
+        /**
+         * App\Media
+         */
+        $media = $this->image->media;
+
+        if (!Storage::disk($media->disk)->exists($media->fullName) ) return '';
+
+        return '/storage/postMainImages/' . $media->fullName;
+    }
+
+
+    public function image()
+    {
+        return $this->hasOne('App\PostMedia', 'post_id', 'id')
+            ->where('post_media_type', '=', PostMedia::TYPE_MAIN_IMAGE)
+            ->with('media');
     }
 
     public function comment(){

@@ -1,9 +1,10 @@
 <template>
 
-    <div>
+    <div class="comments-list">
         <Comment v-for="comment in comments"
                  :key="comment.id"
-                :comment="comment">
+                :comment="comment"
+        >
 
         </Comment>
     </div>
@@ -35,12 +36,12 @@
 
         methods:{
             getComments(id){
-                //console.log(id);
             },
 
             setDataAttributes(response){
-                console.log(response);
-                this.comments = response.data[0];
+                this.comments = response.data;
+                console.log('------------+---------')
+                console.log(this.comments)
             }
         },
 
@@ -52,6 +53,10 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+    .comments-list {
+        margin-top: 40px;
+    }
 
 </style>

@@ -36,4 +36,5 @@ class CreatePostCategoriesTable extends Migration
     {
         Schema::dropIfExists('post_categories');
     }
+
 }

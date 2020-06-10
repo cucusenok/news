@@ -21,6 +21,10 @@ const posts = {
             state.currentPage = payload.current_page;
             state.lastPage = payload.last_page;
         },
+
+        addPost: (state, payload) => {
+
+        }
     },
 
     actions: {
@@ -32,14 +36,21 @@ const posts = {
             let {data} = apiRequest('post_list', '', {'page' : payload.page})
                 .then(response => response.json())
                 .then(response => commit(types.SET_ALL_POSTS, response));
-
         },
     },
 
     getters: {
         [types.ALL_POSTS]: state => {
             return state.all_posts;
-        }
+        },
+
+        getByPostId: state => id => {
+            if(!this.all_posts){
+                return
+            }
+
+            return state.all_posts.find( post =>  post.id === id );
+        },
     }
 }
 

@@ -15,11 +15,8 @@ class CommentController extends Controller
         $comments = Comment::with('user')
             ->where(   'post_id', '=', $id)
             ->where('parent_id', '=', 0)
-            ->paginate(1);
+            ->paginate(10);
 
-
-        //dd($comments);
-        //die();
         return response()->json($comments);
     }
 

@@ -25,5 +25,8 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+
+@import "error/base";
+
 //node modules
 @import "../../node_modules/vue-multiselect/dist/vue-multiselect.min.css";

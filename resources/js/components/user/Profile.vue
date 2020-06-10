@@ -126,38 +126,6 @@
         color: #847d7d;
     }
 
-    .activity{
-
-        &__container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 25px;
-        }
-
-        &__rating {
-            text-align: center;
-            color: #ffdf00;
-        }
-
-        &__item {
-            padding: 0 10px 0 0;
-            font-size: 16px;
-
-            &-icon {
-                font-size: 25px;
-            }
-
-            &-name {
-                text-align: center;
-            }
-
-            &-value {
-                text-align: center;
-            }
-        }
-
-    }
-
     .user-card__container {
         display: flex;
         justify-content: center;

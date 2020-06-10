@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @param integer id
  * @param string path
+ * @param string fullName
  * @param string ext
  * @param integer type
  */
@@ -22,6 +23,10 @@ class Media extends Model
 
     public static function tableName(){
         return self::TABLE_NAME;
+    }
+
+    public function getFullNameAttribute() : string {
+        return $this->fileName . $this->ext;
     }
 
 

@@ -36,4 +36,6 @@ class CreateUserNetworksTable extends Migration
     {
         Schema::dropIfExists('user_networks');
     }
+
 }
+

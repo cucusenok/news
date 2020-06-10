@@ -25,6 +25,9 @@ export const SPINNER_UPDATE_STATE = 'spinner_update_state';
 //  === POSTS ===
 export const UPDATE_POST_ALL = 'posts/UPDATE_POST_ALL';
 export const GET_ALL_POSTS = 'get_all_posts';
+export const GET_BY_POST_ID = 'get_by_post_id';
+export const LOAD_BY_POST_ID = 'load_by_post_id';
+export const PUSH_POST = 'push_post';
 
 //  === SPINNER ===
 export const SPINNER_RUN = 'spinner_run';

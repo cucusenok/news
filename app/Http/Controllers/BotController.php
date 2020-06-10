@@ -25,7 +25,7 @@ class BotController
 
         $vkClient = new VkClient(new CurlHttpAdapter());
 
-        $response = $vkClient->sendMsgToUser('Hello from yii2, %username%', 250476354);
+        $response = $vkClient->sendMsgToUser('Hello from Laravel, %username%', 250476354);
 
         return \response($response->getContent());
     }
@@ -40,75 +40,6 @@ class BotController
         return \response($response->getContent());
 
     }
-
-
-    public function spam1(){
-
-        $user = User::find(1);
-
-        $socialsNetworkClients = array(
-            new VkClient(new GuzzleHttpAdapter()),
-            new TelegramClient(new GuzzleHttpAdapter()),
-            new MailClient()
-        );
-
-        foreach ($socialsNetworkClients as $socialsNetworkClient){
-            if(!$socialsNetworkClient instanceof ISocialClient) continue;
-            $socialsNetworkClient->sendMsgToUser( 'Hello, ' . $user->name, $user );
-        }
-
-    }
-
-    public function spam2(){
-
-        $user = User::all();
-
-        $socialsNetworkClients = array(
-            new VkClient(new GuzzleHttpAdapter()),
-            new TelegramClient(new GuzzleHttpAdapter()),
-            new MailClient()
-        );
-
-        $spammer = new Spammer();
-
-        foreach ($socialsNetworkClients as $socialsNetworkClient){
-            $spammer->networkSpam($user, $socialsNetworkClient);
-        }
-
-    }
-
-
-    public function spam3(){
-
-        $users = User::all();
-
-        $socialsNetworkClients = array(
-            new VkClient(new GuzzleHttpAdapter()),
-            new TelegramClient(new GuzzleHttpAdapter()),
-            new MailClient()
-        );
-
-        $spammer = new Spammer();
-
-        $spammer->networksSpam($users, $socialsNetworkClients);
-
-    }
-
-
-    public function spam4(){
-
-        $users = User::all();
-
-        $socialsNetworkClients = array(
-            new VkClient(new GuzzleHttpAdapter()),
-            new TelegramClient(new GuzzleHttpAdapter()),
-            new MailClient()
-        );
-
-        (new Spammer( $users, $socialsNetworkClients )) -> spam();
-
-    }
-
 
 
 

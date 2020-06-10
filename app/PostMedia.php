@@ -45,6 +45,12 @@ class PostMedia extends Model
          }
     }
 
+
+    public function media()
+    {
+        return $this->hasOne('App\Media', 'id', 'media_id');
+    }
+
     public function saveMedia() {
 
     }

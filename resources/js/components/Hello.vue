@@ -10,11 +10,10 @@
 <script>
     
     function setDataAttributes2(response, data) {
-        console.log(response);
+
     }
 
     function loadPost(data) {
-        console.log(data);
     }
     
     export default {
@@ -40,7 +39,6 @@
         
         methods:{
           setDataAttributes: function(response){
-                console.log(response);
                 this.title = response.name;
                 this.body = response.body;
                 this.author = response.author.name;

@@ -15,7 +15,7 @@ const API_PREFIX = '/api/';
 
 
 //simple decorator on fetch method
-function apiRequest(name, params, options) {
+function apiRequest(name, params, options = {}) {
     let link = generateLink(name, params, options);
     let newOptions = options.method == 'POST' ? addBodyToOption(options, params) : options
     newOptions = addHeaders(newOptions)
